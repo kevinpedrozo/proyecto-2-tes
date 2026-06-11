@@ -6,6 +6,10 @@ import os
 
 app = Flask(__name__)
 
+# ==========================
+# CONEXIÓN A MONGODB
+# ==========================
+
 MONGO_URI = os.environ.get("MONGO_URI")
 
 if not MONGO_URI:
@@ -13,23 +17,34 @@ if not MONGO_URI:
 
 client = MongoClient(MONGO_URI)
 
-# TU BASE DE DATOS
+# Base de datos
 db = client["prueba"]
 
-# TU COLECCIÓN
+# Colección
 coleccion_usuarios = db["testing"]
 
+
+# ==========================
+# PÁGINA PRINCIPAL
+# ==========================
 
 @app.route("/")
 def index():
 
     total = coleccion_usuarios.count_documents({})
 
+    fecha = datetime.now().strftime("%d/%m/%Y")
+
     return render_template(
         "index.html",
-        total=total
+        total=total,
+        fecha=fecha
     )
 
+
+# ==========================
+# REGISTRAR USUARIO
+# ==========================
 
 @app.route("/registrar", methods=["POST"])
 def registrar():
@@ -38,6 +53,22 @@ def registrar():
     correo = request.form.get("correo")
     telefono = request.form.get("telefono")
     ciudad = request.form.get("ciudad")
+
+    # Verificar correo duplicado
+    existe = coleccion_usuarios.find_one({
+        "correo": correo
+    })
+
+    if existe:
+        return """
+        <h2 style='color:red;text-align:center;'>
+        El correo ya se encuentra registrado
+        </h2>
+
+        <center>
+            <a href='/'>Volver</a>
+        </center>
+        """
 
     coleccion_usuarios.insert_one({
         "nombre": nombre,
@@ -50,6 +81,10 @@ def registrar():
     return redirect("/usuarios")
 
 
+# ==========================
+# LISTAR USUARIOS
+# ==========================
+
 @app.route("/usuarios")
 def usuarios():
 
@@ -59,9 +94,14 @@ def usuarios():
 
     return render_template(
         "usuarios.html",
-        usuarios=lista_usuarios
+        usuarios=lista_usuarios,
+        total=len(lista_usuarios)
     )
 
+
+# ==========================
+# BUSCAR USUARIOS
+# ==========================
 
 @app.route("/buscar")
 def buscar():
@@ -79,9 +119,14 @@ def buscar():
 
     return render_template(
         "usuarios.html",
-        usuarios=resultados
+        usuarios=resultados,
+        total=len(resultados)
     )
 
+
+# ==========================
+# ELIMINAR USUARIO
+# ==========================
 
 @app.route("/eliminar/<id>")
 def eliminar(id):
@@ -93,5 +138,47 @@ def eliminar(id):
     return redirect("/usuarios")
 
 
+# ==========================
+# ACERCA DEL SISTEMA
+# ==========================
+
+@app.route("/acerca")
+def acerca():
+
+    total = coleccion_usuarios.count_documents({})
+
+    return render_template(
+        "acerca.html",
+        total=total
+    )
+
+
+# ==========================
+# API REST
+# ==========================
+
+@app.route("/api/usuarios")
+def api_usuarios():
+
+    usuarios = list(
+        coleccion_usuarios.find(
+            {},
+            {"_id": 0}
+        )
+    )
+
+    return {
+        "total_usuarios": len(usuarios),
+        "usuarios": usuarios
+    }
+
+
+# ==========================
+# EJECUCIÓN
+# ==========================
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(
+        host="0.0.0.0",
+        port=5000
+    )
