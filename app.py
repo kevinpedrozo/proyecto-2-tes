@@ -18,7 +18,6 @@ if not MONGO_URI:
 client = MongoClient(MONGO_URI)
 
 db = client["prueba"]
-
 coleccion_usuarios = db["testing"]
 
 # ==========================
@@ -59,9 +58,8 @@ def registrar():
         <h2 style='text-align:center;color:red'>
         Este correo ya está registrado
         </h2>
-
         <center>
-            <a href='/'>Volver</a>
+        <a href='/'>Volver</a>
         </center>
         """
 
@@ -76,7 +74,7 @@ def registrar():
     return redirect("/usuarios")
 
 # ==========================
-# LISTAR USUARIOS
+# USUARIOS
 # ==========================
 
 @app.route("/usuarios")
@@ -144,26 +142,7 @@ def acerca():
     )
 
 # ==========================
-# API REST
-# ==========================
-
-@app.route("/api/usuarios")
-def api_usuarios():
-
-    usuarios = list(
-        coleccion_usuarios.find(
-            {},
-            {"_id": 0}
-        )
-    )
-
-    return {
-        "total_usuarios": len(usuarios),
-        "usuarios": usuarios
-    }
-
-# ==========================
-# TABLA API
+# TABLA VISUAL
 # ==========================
 
 @app.route("/tabla")
@@ -177,6 +156,16 @@ def tabla():
         "tabla.html",
         usuarios=usuarios
     )
+
+# ==========================
+# API USUARIOS
+# REDIRIGE A TABLA
+# ==========================
+
+@app.route("/api/usuarios")
+def api_usuarios():
+
+    return redirect("/tabla")
 
 # ==========================
 # MAIN
