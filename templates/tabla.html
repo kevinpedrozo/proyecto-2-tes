@@ -1,223 +1,121 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        body {
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), 
+                        url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #1e293b;
+        }
 
-<title>Visualización API</title>
+        /* NAVBAR */
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #3b82f6;
+        }
+        .navbar h2 { color: white; }
+        .navbar a { color: #cbd5e1; text-decoration: none; margin-left: 25px; font-size: 0.95rem; }
+        .navbar a:hover { color: #3b82f6; }
 
-<style>
+        /* CONTENEDOR */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, sans-serif;
-}
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
 
-body{
-background:#f4f6f9;
-}
+        h1 { color: #0f172a; margin-bottom: 10px; font-size: 1.8rem; text-align: center; }
+        .total { text-align: center; color: #64748b; margin-bottom: 30px; font-weight: 600; }
 
-.navbar{
-background:#1e293b;
-padding:15px 40px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
+        /* TABLA */
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background: #f1f5f9; color: #0f172a; padding: 15px; text-align: center; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 15px; text-align: center; border-bottom: 1px solid #e2e8f0; color: #334155; }
+        tr:hover { background: #f8fafc; }
 
-.navbar h2{
-color:white;
-}
+        /* BOTONES */
+        .botones { margin-top: 30px; display: flex; gap: 15px; justify-content: center; }
+        .btn { padding: 12px 25px; border-radius: 6px; text-decoration: none; font-size: 0.9rem; font-weight: 600; color: white; }
+        .btn-home { background: #0f172a; }
+        .btn-users { background: #3b82f6; }
+        .btn-api { background: #64748b; }
 
-.navbar a{
-color:white;
-text-decoration:none;
-margin-left:20px;
-font-weight:bold;
-}
-
-.container{
-max-width:1300px;
-margin:auto;
-padding:30px;
-}
-
-.card{
-background:white;
-padding:25px;
-border-radius:10px;
-box-shadow:0 2px 10px rgba(0,0,0,.1);
-}
-
-h1{
-text-align:center;
-color:#007bff;
-margin-bottom:20px;
-}
-
-.total{
-font-size:18px;
-font-weight:bold;
-margin-bottom:20px;
-color:#007bff;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th{
-background:#007bff;
-color:white;
-padding:15px;
-}
-
-td{
-padding:12px;
-text-align:center;
-border-bottom:1px solid #ddd;
-}
-
-tr:nth-child(even){
-background:#f8fafc;
-}
-
-tr:hover{
-background:#dbeafe;
-}
-
-.botones{
-margin-top:20px;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
-
-.btn{
-padding:12px 20px;
-border-radius:5px;
-text-decoration:none;
-color:white;
-font-weight:bold;
-}
-
-.btn-home{
-background:#28a745;
-}
-
-.btn-api{
-background:#17a2b8;
-}
-
-.btn-users{
-background:#007bff;
-}
-
-footer{
-background:#1e293b;
-color:white;
-text-align:center;
-padding:20px;
-margin-top:40px;
-}
-
-</style>
-
+        footer { background: rgba(15, 23, 42, 0.95); color: #94a3b8; text-align: center; padding: 20px; margin-top: 40px; }
+    </style>
 </head>
-
 <body>
 
-<nav class="navbar">
+    <nav class="navbar">
+        <h2>Sistema Usuarios</h2>
+        <div>
+            <a href="/">Inicio</a>
+            <a href="/usuarios">Usuarios</a>
+            <a href="/acerca">Acerca</a>
+        </div>
+    </nav>
 
-<h2>Sistema Usuarios</h2>
+    <div class="container">
+        <div class="card">
+            <h1>Visualización de la API REST</h1>
+            <p class="total">Total usuarios registrados: <strong>{{ usuarios|length }}</strong></p>
 
-<div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Ciudad</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.get("nombre","") }}</td>
+                            <td>{{ usuario.get("correo","") }}</td>
+                            <td>{{ usuario.get("telefono","") }}</td>
+                            <td>{{ usuario.get("ciudad","") }}</td>
+                            <td>{{ usuario.get("fecha","") }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
-<a href="/">Inicio</a>
-<a href="/usuarios">Usuarios</a>
-<a href="/acerca">Acerca</a>
+            <div class="botones">
+                <a class="btn btn-home" href="/">Inicio</a>
+                <a class="btn btn-users" href="/usuarios">Ver Usuarios</a>
+                <a class="btn btn-api" href="/api/usuarios" target="_blank">Ver JSON Crudo</a>
+            </div>
+        </div>
+    </div>
 
-</div>
-
-</nav>
-
-<div class="container">
-
-<div class="card">
-
-<h1>Visualización de la API REST</h1>
-
-<p class="total">
-Total usuarios registrados: {{ usuarios|length }}
-</p>
-
-<table>
-
-<tr>
-
-<th>Nombre</th>
-<th>Correo</th>
-<th>Teléfono</th>
-<th>Ciudad</th>
-<th>Fecha</th>
-
-</tr>
-
-{% for usuario in usuarios %}
-
-<tr>
-
-<td>{{ usuario.get("nombre","") }}</td>
-
-<td>{{ usuario.get("correo","") }}</td>
-
-<td>{{ usuario.get("telefono","") }}</td>
-
-<td>{{ usuario.get("ciudad","") }}</td>
-
-<td>{{ usuario.get("fecha","") }}</td>
-
-</tr>
-
-{% endfor %}
-
-</table>
-
-<div class="botones">
-
-<a class="btn btn-home" href="/">
-Inicio
-</a>
-
-<a class="btn btn-users" href="/usuarios">
-Usuarios
-</a>
-
-<a class="btn btn-api" href="/api/usuarios" target="_blank">
-Ver JSON
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-<footer>
-
-<h3>Sistema de Gestión de Usuarios</h3>
-
-<p>
-Flask + MongoDB Atlas + Render
-</p>
-
-</footer>
+    <footer>
+        <p>Sistema de Gestión de Usuarios &copy; 2026</p>
+    </footer>
 
 </body>
-
 </html>
