@@ -2,117 +2,178 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Registro</title>
 
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:Arial, Helvetica, sans-serif;
-        }
+<title>Sistema de Gestión de Usuarios</title>
 
-        body{
-            background:#f4f4f4;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-        }
+<style>
 
-        .container{
-            background:white;
-            padding:30px;
-            border-radius:10px;
-            box-shadow:0 0 15px rgba(0,0,0,0.2);
-            width:400px;
-        }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
 
-        h1{
-            text-align:center;
-            margin-bottom:20px;
-            color:#333;
-        }
+body{
+background:#f4f4f4;
+}
 
-        input{
-            width:100%;
-            padding:12px;
-            margin-bottom:15px;
-            border:1px solid #ccc;
-            border-radius:5px;
-        }
+header{
+background:#007bff;
+color:white;
+padding:20px;
+text-align:center;
+}
 
-        button{
-            width:100%;
-            padding:12px;
-            background:#007bff;
-            color:white;
-            border:none;
-            border-radius:5px;
-            cursor:pointer;
-            font-size:16px;
-        }
+.container{
+max-width:1000px;
+margin:auto;
+padding:30px;
+}
 
-        button:hover{
-            background:#0056b3;
-        }
+.card{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+margin-bottom:20px;
+}
 
-        .link{
-            text-align:center;
-            margin-top:15px;
-        }
+.dashboard{
+display:flex;
+gap:20px;
+margin-bottom:20px;
+}
 
-        .link a{
-            text-decoration:none;
-            color:#007bff;
-            font-weight:bold;
-        }
+.box{
+flex:1;
+background:white;
+padding:20px;
+border-radius:10px;
+text-align:center;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+}
 
-        .link a:hover{
-            text-decoration:underline;
-        }
+.box h2{
+color:#007bff;
+font-size:40px;
+}
 
-    </style>
+input, select{
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#007bff;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#0056b3;
+}
+
+.link{
+text-align:center;
+margin-top:15px;
+}
+
+.link a{
+text-decoration:none;
+color:#007bff;
+font-weight:bold;
+}
+
+</style>
 
 </head>
 
 <body>
 
-    <div class="container">
+<header>
+<h1>Sistema de Registro de Usuarios</h1>
+</header>
 
-        <h1>Registro de Usuarios</h1>
+<div class="container">
 
-        <form action="/registrar" method="POST">
+<div class="dashboard">
 
-            <input
-                type="text"
-                name="nombre"
-                placeholder="Ingrese su nombre"
-                required>
+<div class="box">
+<h2>{{ total }}</h2>
+<p>Usuarios Registrados</p>
+</div>
 
-            <input
-                type="email"
-                name="correo"
-                placeholder="Ingrese su correo"
-                required>
+</div>
 
-            <button type="submit">
-                Registrar Usuario
-            </button>
+<div class="card">
 
-        </form>
+<h2>Registrar Usuario</h2>
 
-        <div class="link">
-            <a href="/usuarios">
-                Ver Usuarios Registrados
-            </a>
-        </div>
+<form action="/registrar" method="POST">
 
-    </div>
+<input
+type="text"
+name="nombre"
+placeholder="Nombre Completo"
+required>
+
+<input
+type="email"
+name="correo"
+placeholder="Correo Electrónico"
+required>
+
+<input
+type="text"
+name="telefono"
+placeholder="Teléfono"
+required>
+
+<select name="ciudad" required>
+
+<option value="">Seleccione Ciudad</option>
+
+<option>Bogotá</option>
+<option>Medellín</option>
+<option>Cali</option>
+<option>Barranquilla</option>
+<option>Cartagena</option>
+
+</select>
+
+<button type="submit">
+
+Registrar Usuario
+
+</button>
+
+</form>
+
+<div class="link">
+
+<a href="/usuarios">
+
+Ver Usuarios Registrados
+
+</a>
+
+</div>
+
+</div>
+
+</div>
 
 </body>
-
 </html>
