@@ -17,15 +17,12 @@ if not MONGO_URI:
 
 client = MongoClient(MONGO_URI)
 
-# Base de datos
 db = client["prueba"]
 
-# Colección
 coleccion_usuarios = db["testing"]
 
-
 # ==========================
-# PÁGINA PRINCIPAL
+# HOME
 # ==========================
 
 @app.route("/")
@@ -41,9 +38,8 @@ def index():
         fecha=fecha
     )
 
-
 # ==========================
-# REGISTRAR USUARIO
+# REGISTRAR
 # ==========================
 
 @app.route("/registrar", methods=["POST"])
@@ -54,15 +50,14 @@ def registrar():
     telefono = request.form.get("telefono")
     ciudad = request.form.get("ciudad")
 
-    # Verificar correo duplicado
     existe = coleccion_usuarios.find_one({
         "correo": correo
     })
 
     if existe:
         return """
-        <h2 style='color:red;text-align:center;'>
-        El correo ya se encuentra registrado
+        <h2 style='text-align:center;color:red'>
+        Este correo ya está registrado
         </h2>
 
         <center>
@@ -79,7 +74,6 @@ def registrar():
     })
 
     return redirect("/usuarios")
-
 
 # ==========================
 # LISTAR USUARIOS
@@ -98,9 +92,8 @@ def usuarios():
         total=len(lista_usuarios)
     )
 
-
 # ==========================
-# BUSCAR USUARIOS
+# BUSCAR
 # ==========================
 
 @app.route("/buscar")
@@ -123,9 +116,8 @@ def buscar():
         total=len(resultados)
     )
 
-
 # ==========================
-# ELIMINAR USUARIO
+# ELIMINAR
 # ==========================
 
 @app.route("/eliminar/<id>")
@@ -137,9 +129,8 @@ def eliminar(id):
 
     return redirect("/usuarios")
 
-
 # ==========================
-# ACERCA DEL SISTEMA
+# ACERCA
 # ==========================
 
 @app.route("/acerca")
@@ -151,7 +142,6 @@ def acerca():
         "acerca.html",
         total=total
     )
-
 
 # ==========================
 # API REST
@@ -172,9 +162,24 @@ def api_usuarios():
         "usuarios": usuarios
     }
 
+# ==========================
+# TABLA API
+# ==========================
+
+@app.route("/tabla")
+def tabla():
+
+    usuarios = list(
+        coleccion_usuarios.find()
+    )
+
+    return render_template(
+        "tabla.html",
+        usuarios=usuarios
+    )
 
 # ==========================
-# EJECUCIÓN
+# MAIN
 # ==========================
 
 if __name__ == "__main__":
