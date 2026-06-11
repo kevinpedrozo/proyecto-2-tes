@@ -2,141 +2,174 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuarios Registrados</title>
 
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+<title>Usuarios Registrados</title>
 
-        body{
-            background:#f4f4f4;
-            padding:40px;
-        }
+<style>
 
-        .container{
-            max-width:900px;
-            margin:auto;
-            background:white;
-            padding:30px;
-            border-radius:10px;
-            box-shadow:0 0 15px rgba(0,0,0,0.2);
-        }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
 
-        h1{
-            text-align:center;
-            margin-bottom:25px;
-            color:#333;
-        }
+body{
+background:#f4f4f4;
+padding:30px;
+}
 
-        table{
-            width:100%;
-            border-collapse:collapse;
-            margin-bottom:20px;
-        }
+.container{
+max-width:1200px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+}
 
-        table th{
-            background:#007bff;
-            color:white;
-            padding:12px;
-        }
+h1{
+text-align:center;
+margin-bottom:20px;
+}
 
-        table td{
-            padding:12px;
-            border-bottom:1px solid #ddd;
-            text-align:center;
-        }
+form{
+margin-bottom:20px;
+}
 
-        table tr:nth-child(even){
-            background:#f9f9f9;
-        }
+input{
+padding:10px;
+width:300px;
+border:1px solid #ccc;
+border-radius:5px;
+}
 
-        table tr:hover{
-            background:#f1f1f1;
-        }
+button{
+padding:10px 20px;
+background:#007bff;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
 
-        .btn{
-            display:inline-block;
-            padding:10px 20px;
-            background:#007bff;
-            color:white;
-            text-decoration:none;
-            border-radius:5px;
-        }
+table{
+width:100%;
+border-collapse:collapse;
+}
 
-        .btn:hover{
-            background:#0056b3;
-        }
+th{
+background:#007bff;
+color:white;
+padding:12px;
+}
 
-        .center{
-            text-align:center;
-        }
+td{
+padding:12px;
+text-align:center;
+border-bottom:1px solid #ddd;
+}
 
-        .sin-registros{
-            text-align:center;
-            color:#666;
-            font-size:18px;
-            margin:20px 0;
-        }
+tr:nth-child(even){
+background:#f9f9f9;
+}
 
-    </style>
+.eliminar{
+background:red;
+padding:8px;
+color:white;
+text-decoration:none;
+border-radius:5px;
+}
+
+.volver{
+display:inline-block;
+margin-top:20px;
+padding:10px 20px;
+background:#28a745;
+color:white;
+text-decoration:none;
+border-radius:5px;
+}
+
+</style>
 
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>Usuarios Registrados</h1>
+<h1>Consulta de Usuarios</h1>
 
-        {% if usuarios %}
+<form action="/buscar">
 
-        <table>
+<input
+type="text"
+name="nombre"
+placeholder="Buscar usuario">
 
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                </tr>
-            </thead>
+<button type="submit">
 
-            <tbody>
+Buscar
 
-                {% for usuario in usuarios %}
+</button>
 
-                <tr>
-                    <td>{{ usuario.nombre }}</td>
-                    <td>{{ usuario.correo }}</td>
-                </tr>
+</form>
 
-                {% endfor %}
+<table>
 
-            </tbody>
+<tr>
+<th>Nombre</th>
+<th>Correo</th>
+<th>Teléfono</th>
+<th>Ciudad</th>
+<th>Fecha Registro</th>
+<th>Acción</th>
+</tr>
 
-        </table>
+{% for usuario in usuarios %}
 
-        {% else %}
+<tr>
 
-        <div class="sin-registros">
-            No hay usuarios registrados.
-        </div>
+<td>{{ usuario["nombre"] }}</td>
 
-        {% endif %}
+<td>{{ usuario["correo"] }}</td>
 
-        <div class="center">
-            <a href="/" class="btn">
-                Volver al Inicio
-            </a>
-        </div>
+<td>{{ usuario["telefono"] }}</td>
 
-    </div>
+<td>{{ usuario["ciudad"] }}</td>
+
+<td>{{ usuario["fecha"] }}</td>
+
+<td>
+
+<a
+class="eliminar"
+href="/eliminar/{{ usuario['_id'] }}">
+
+Eliminar
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<a class="volver" href="/">
+
+Volver al Inicio
+
+</a>
+
+</div>
 
 </body>
-
 </html>
