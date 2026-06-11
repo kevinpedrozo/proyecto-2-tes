@@ -13,8 +13,8 @@ if not MONGO_URI:
 # Conexión a MongoDB
 client = MongoClient(MONGO_URI)
 
-db = client["registro_db"]
-coleccion_usuarios = db["usuarios"]
+db = client["prueba"]
+coleccion_usuarios = db["testing"]
 
 
 @app.route("/")
